@@ -17,13 +17,19 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "pink.iika.extrapotions.Extrapotions",
+				"value": "pink.iika.extrapotions.ExtraPotions",
 				"adapter": "kotlin"
 			}
 		],
 		"fabric-datagen": [
 			{
-				"value": "pink.iika.extrapotions.ExtrapotionsDataGenerator",
+				"value": "pink.iika.extrapotions.ExtraPotionsDataGenerator",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "pink.iika.extrapotions.ExtraPotionsClient",
 				"adapter": "kotlin"
 			}
 		]

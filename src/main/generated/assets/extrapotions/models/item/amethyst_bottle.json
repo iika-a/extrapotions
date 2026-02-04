@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "extrapotions:item/amethyst_bottle"
+  }
+}

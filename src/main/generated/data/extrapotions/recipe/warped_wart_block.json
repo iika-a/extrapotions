@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart",
+    "extrapotions:warped_wart"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:warped_wart_block"
+  }
+}

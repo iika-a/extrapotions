@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "minecraft:blaze_powder",
+    "R": "minecraft:breeze_rod"
+  },
+  "pattern": [
+    "PRP"
+  ],
+  "result": {
+    "count": 2,
+    "id": "extrapotions:breeze_powder"
+  }
+}

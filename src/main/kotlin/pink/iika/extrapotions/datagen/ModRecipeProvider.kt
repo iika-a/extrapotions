@@ -9,6 +9,7 @@ import net.minecraft.recipe.book.RecipeCategory
 import net.minecraft.registry.RegistryWrapper.WrapperLookup
 import net.minecraft.util.Identifier
 import pink.iika.extrapotions.ExtraPotions
+import pink.iika.extrapotions.block.ModBlocks
 import pink.iika.extrapotions.item.ModItems
 import java.util.concurrent.CompletableFuture
 
@@ -47,6 +48,15 @@ class ModRecipeProvider(
                     .input('P', Items.BLAZE_POWDER)
                     .input('R', Items.BREEZE_ROD)
                     .criterion(hasItem(Items.BLAZE_POWDER), conditionsFromItem(Items.BLAZE_POWDER))
+                    .criterion(hasItem(Items.BREEZE_ROD), conditionsFromItem(Items.BREEZE_ROD))
+                    .offerTo(recipeExporter)
+
+                createShaped(RecipeCategory.BREWING, ModBlocks.BREEZE_STAND)
+                    .pattern(" R ")
+                    .pattern("III")
+                    .input('I', Items.IRON_INGOT)
+                    .input('R', Items.BREEZE_ROD)
+                    .criterion(hasItem(Items.IRON_INGOT), conditionsFromItem(Items.IRON_INGOT))
                     .criterion(hasItem(Items.BREEZE_ROD), conditionsFromItem(Items.BREEZE_ROD))
                     .offerTo(recipeExporter)
             }

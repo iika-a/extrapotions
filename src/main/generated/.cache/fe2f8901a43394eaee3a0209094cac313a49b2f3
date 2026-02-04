@@ -1,7 +1,9 @@
 // 1.21.11	-999999999-01-01T00:00:00	extrapotions/extrapotions:recipe_provider
 3c814c4c43f0000dbbc4d75d601370c6fdf4b046 data/extrapotions/advancement/recipes/brewing/amethyst_bottle.json
 77a9823a57b87ff2a3ae4c755f3eebddf40c142f data/extrapotions/advancement/recipes/brewing/breeze_powder.json
+b4ff51a5e5cdb4aae35415eec67fcabda37f0ce9 data/extrapotions/advancement/recipes/brewing/breeze_stand.json
 b389621f2b189f5a9a4736cc4c47124204e0d2b2 data/extrapotions/advancement/recipes/decorations/warped_wart_block.json
 56d77216bbfc157207816bc6ba2d31ebe11d6003 data/extrapotions/recipe/amethyst_bottle.json
 111b65cdd33192c4da429e0a6b57ae1825947e81 data/extrapotions/recipe/breeze_powder.json
+678e1b1b4b6523155811e953779c4b701054d57a data/extrapotions/recipe/breeze_stand.json
 8a364ae49dc3edb08a0d9c1b46008fbac4897b23 data/extrapotions/recipe/warped_wart_block.json

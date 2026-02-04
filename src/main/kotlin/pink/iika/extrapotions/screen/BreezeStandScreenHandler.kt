@@ -17,6 +17,7 @@ import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
+import pink.iika.extrapotions.item.ModItems
 
 class BreezeStandScreenHandler @JvmOverloads constructor(
     syncId: Int,
@@ -141,7 +142,7 @@ class BreezeStandScreenHandler @JvmOverloads constructor(
         companion object {
             fun matches(stack: ItemStack): Boolean {
                 return stack.isOf(Items.POTION) || stack.isOf(Items.SPLASH_POTION) || stack.isOf(Items.LINGERING_POTION) || stack.isOf(
-                    Items.GLASS_BOTTLE
+                    ModItems.AMETHYST_BOTTLE
                 )
             }
         }
@@ -170,7 +171,7 @@ class BreezeStandScreenHandler @JvmOverloads constructor(
 
         companion object {
             fun matches(stack: ItemStack): Boolean {
-                return stack.isIn(ItemTags.BREWING_FUEL)
+                return stack.isOf(ModItems.BREEZE_POWDER)
             }
         }
     }

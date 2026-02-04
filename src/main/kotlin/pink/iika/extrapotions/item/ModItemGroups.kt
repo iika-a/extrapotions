@@ -8,6 +8,7 @@ import net.minecraft.registry.Registry
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import pink.iika.extrapotions.ExtraPotions
+import pink.iika.extrapotions.block.ModBlocks
 
 object ModItemGroups {
 
@@ -26,6 +27,7 @@ object ModItemGroups {
                     entries.add(ModItems.WARPED_WART)
                     entries.add(ModItems.BREEZE_POWDER)
                     entries.add(ModItems.AMETHYST_BOTTLE)
+                    entries.add(ModBlocks.BREEZE_STAND)
                 }
                 .build()
         )

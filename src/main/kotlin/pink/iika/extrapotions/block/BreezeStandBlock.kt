@@ -5,7 +5,6 @@ import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityTicker
 import net.minecraft.block.entity.BlockEntityType
-import net.minecraft.block.entity.BrewingStandBlockEntity
 import net.minecraft.entity.ai.pathing.NavigationType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.particle.ParticleTypes
@@ -85,7 +84,7 @@ class BreezeStandBlock(settings: Settings) : BlockWithEntity(settings) {
         val d = pos.x.toDouble() + 0.4 + random.nextFloat().toDouble() * 0.2
         val e = pos.y.toDouble() + 0.7 + random.nextFloat().toDouble() * 0.3
         val f = pos.z.toDouble() + 0.4 + random.nextFloat().toDouble() * 0.2
-        world.addParticleClient(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0)
+        world.addParticleClient(ParticleTypes.SMALL_GUST, d, e, f, 0.0, 1.0, 0.0)
     }
 
     override fun onStateReplaced(state: BlockState, world: ServerWorld, pos: BlockPos?, moved: Boolean) {

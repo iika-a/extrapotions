@@ -35,7 +35,7 @@ class ModRecipeProvider(
                     .criterion(hasItem(ModItems.WARPED_WART), this.conditionsFromItem(ModItems.WARPED_WART))
                     .offerTo(recipeExporter)
 
-                createShaped(RecipeCategory.BREWING, ModItems.AMETHYST_BOTTLE, 1)
+                createShaped(RecipeCategory.BREWING, ModItems.AMETHYST_BOTTLE, 3)
                     .pattern("A A")
                     .pattern(" A ")
                     .input('A', Items.AMETHYST_SHARD)

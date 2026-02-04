@@ -26,7 +26,7 @@ object ModBlocks {
                         Identifier.of(ExtraPotions.MOD_ID, "breeze_stand")
                     )
                 )
-                .strength(4f).requiresTool().sounds(BlockSoundGroup.STONE)
+                .strength(0.5f).requiresTool().sounds(BlockSoundGroup.STONE)
         )
     )
 

@@ -12,7 +12,7 @@ object ModScreenHandlers {
     val BREEZE_STAND_BLOCK_SCREEN_HANDLER_TYPE: ScreenHandlerType<BreezeStandScreenHandler> =
         Registry.register(
             Registries.SCREEN_HANDLER,
-            Identifier.of(ExtraPotions.MOD_ID, "lightning_collector_screen_handler"),
+            Identifier.of(ExtraPotions.MOD_ID, "breeze_stand_screen_handler"),
             ScreenHandlerType(::BreezeStandScreenHandler, FeatureSet.empty())
         )
 

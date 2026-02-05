@@ -8,8 +8,6 @@ import net.minecraft.inventory.SidedInventory
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.recipe.BrewingRecipeRegistry
-import net.minecraft.registry.tag.ItemTags
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.storage.ReadView
@@ -22,6 +20,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import pink.iika.extrapotions.block.BreezeStandBlock
 import pink.iika.extrapotions.item.ModItems
+import pink.iika.extrapotions.recipe.BreezingRecipeRegistry
 import pink.iika.extrapotions.screen.BreezeStandScreenHandler
 
 open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
@@ -110,9 +109,12 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
     override fun isValid(slot: Int, stack: ItemStack): Boolean {
         when (slot) {
             3 -> {
-                val brewingRecipeRegistry =
-                    if (this.world != null) this.world!!.brewingRecipeRegistry else BrewingRecipeRegistry.EMPTY
-                return brewingRecipeRegistry.isValidIngredient(stack)
+                val registry =
+                    if (world != null)
+                        BreezingRecipeRegistry.create(world!!.enabledFeatures)
+                    else
+                        BreezingRecipeRegistry.EMPTY
+                return registry.isValidIngredient(stack)
             }
             4 -> {
                 return stack.isOf(ModItems.BREEZE_POWDER)
@@ -166,14 +168,15 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
                 markDirty(world, pos, state)
             }
 
-            val bl = canCraft(world.brewingRecipeRegistry, blockEntity.inventory)
+            val registry = BreezingRecipeRegistry.create(world.enabledFeatures)
+            val bl = canCraft(registry, blockEntity.inventory)
             val bl2 = blockEntity.brewTime > 0
             val itemStack2 = blockEntity.inventory[3] as ItemStack
             if (bl2) {
                 --blockEntity.brewTime
                 val bl3 = blockEntity.brewTime == 0
                 if (bl3 && bl) {
-                    craft(world, pos, blockEntity.inventory)
+                    craft(world, pos, registry, blockEntity.inventory)
                 } else if (!bl || !itemStack2.isOf(blockEntity.itemBrewing)) {
                     blockEntity.brewTime = 0
                 }
@@ -205,16 +208,16 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
             }
         }
 
-        private fun canCraft(brewingRecipeRegistry: BrewingRecipeRegistry, slots: DefaultedList<ItemStack?>): Boolean {
+        private fun canCraft(breezingRecipeRegistry: BreezingRecipeRegistry, slots: DefaultedList<ItemStack?>): Boolean {
             val itemStack = slots[3] as ItemStack
             if (itemStack.isEmpty) {
                 return false
-            } else if (!brewingRecipeRegistry.isValidIngredient(itemStack)) {
+            } else if (!breezingRecipeRegistry.isValidIngredient(itemStack)) {
                 return false
             } else {
                 for (i in 0..2) {
                     val itemStack2 = slots[i] as ItemStack
-                    if (!itemStack2.isEmpty && brewingRecipeRegistry.hasRecipe(itemStack2, itemStack)) {
+                    if (!itemStack2.isEmpty && breezingRecipeRegistry.hasRecipe(itemStack2, itemStack)) {
                         return true
                     }
                 }
@@ -223,31 +226,38 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
             }
         }
 
-        private fun craft(world: World, pos: BlockPos, slots: DefaultedList<ItemStack?>) {
-            var itemStack = slots[3] as ItemStack
-            val brewingRecipeRegistry = world.brewingRecipeRegistry
+        private fun craft(
+            world: World,
+            pos: BlockPos,
+            registry: BreezingRecipeRegistry,
+            slots: DefaultedList<ItemStack?>
+        ) {
+            var ingredient = slots[3] ?: return
 
             for (i in 0..2) {
-                slots[i] = brewingRecipeRegistry.craft(itemStack, slots[i])
+                val bottle = slots[i]
+                if (bottle != null && !bottle.isEmpty) {
+                    slots[i] = registry.craft(ingredient, bottle)
+                }
             }
 
-            itemStack.decrement(1)
-            val itemStack2 = itemStack.item.recipeRemainder
-            if (!itemStack2.isEmpty) {
-                if (itemStack.isEmpty) {
-                    itemStack = itemStack2
+            ingredient.decrement(1)
+            val remainder = ingredient.item.recipeRemainder
+            if (!remainder.isEmpty) {
+                if (ingredient.isEmpty) {
+                    ingredient = remainder
                 } else {
                     ItemScatterer.spawn(
                         world,
                         pos.x.toDouble(),
                         pos.y.toDouble(),
                         pos.z.toDouble(),
-                        itemStack2
+                        remainder
                     )
                 }
             }
 
-            slots[3] = itemStack
+            slots[3] = ingredient
             world.syncWorldEvent(1035, pos, 0)
         }
     }

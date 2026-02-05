@@ -51,7 +51,7 @@ class ModRecipeProvider(
                     .criterion(hasItem(Items.BREEZE_ROD), conditionsFromItem(Items.BREEZE_ROD))
                     .offerTo(recipeExporter)
 
-                createShaped(RecipeCategory.BREWING, ModBlocks.BREEZE_STAND)
+                createShaped(RecipeCategory.BREWING, ModBlocks.BREEZING_STAND)
                     .pattern(" R ")
                     .pattern("III")
                     .input('I', Items.IRON_INGOT)

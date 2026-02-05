@@ -24,16 +24,16 @@ import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
-import pink.iika.extrapotions.block.entity.BreezeStandBlockEntity
+import pink.iika.extrapotions.block.entity.BreezingStandBlockEntity
 import pink.iika.extrapotions.block.entity.ModBlockEntities
 
-class BreezeStandBlock(settings: Settings) : BlockWithEntity(settings) {
-    public override fun getCodec(): MapCodec<BreezeStandBlock?> {
-        return createCodec { BreezeStandBlock(it) }
+class BreezingStandBlock(settings: Settings) : BlockWithEntity(settings) {
+    public override fun getCodec(): MapCodec<BreezingStandBlock?> {
+        return createCodec { BreezingStandBlock(it) }
     }
 
     override fun createBlockEntity(pos: BlockPos, state: BlockState): BlockEntity {
-        return BreezeStandBlockEntity(pos, state)
+        return BreezingStandBlockEntity(pos, state)
     }
 
     override fun <T : BlockEntity?> getTicker(
@@ -41,11 +41,11 @@ class BreezeStandBlock(settings: Settings) : BlockWithEntity(settings) {
         state: BlockState?,
         type: BlockEntityType<T?>?
     ): BlockEntityTicker<T?>? {
-        return if (world.isClient) null else validateTicker<BreezeStandBlockEntity?, T?>(
+        return if (world.isClient) null else validateTicker<BreezingStandBlockEntity?, T?>(
             type,
-            ModBlockEntities.BREEZE_STAND_BLOCK_ENTITY_TYPE,
-            BlockEntityTicker { world: World, pos: BlockPos, state: BlockState, blockEntity: BreezeStandBlockEntity ->
-                BreezeStandBlockEntity.tick(
+            ModBlockEntities.BREEZING_STAND_BLOCK_ENTITY_TYPE,
+            BlockEntityTicker { world: World, pos: BlockPos, state: BlockState, blockEntity: BreezingStandBlockEntity ->
+                BreezingStandBlockEntity.tick(
                     world,
                     pos,
                     state,
@@ -72,7 +72,7 @@ class BreezeStandBlock(settings: Settings) : BlockWithEntity(settings) {
     ): ActionResult {
         if (!world.isClient) {
             val var7 = world.getBlockEntity(pos)
-            if (var7 is BreezeStandBlockEntity) {
+            if (var7 is BreezingStandBlockEntity) {
                 player.openHandledScreen(var7)
             }
         }

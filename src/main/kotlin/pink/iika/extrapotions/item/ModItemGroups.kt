@@ -27,7 +27,7 @@ object ModItemGroups {
                     entries.add(ModItems.WARPED_WART)
                     entries.add(ModItems.BREEZE_POWDER)
                     entries.add(ModItems.AMETHYST_BOTTLE)
-                    entries.add(ModBlocks.BREEZE_STAND)
+                    entries.add(ModBlocks.BREEZING_STAND)
                 }
                 .build()
         )

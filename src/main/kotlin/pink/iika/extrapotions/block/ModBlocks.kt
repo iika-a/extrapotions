@@ -17,13 +17,13 @@ import pink.iika.extrapotions.ExtraPotions
 
 object ModBlocks {
     @JvmStatic
-    val BREEZE_STAND: Block? = registerBlock(
-        "breeze_stand", BreezeStandBlock(
+    val BREEZING_STAND: Block? = registerBlock(
+        "breezing_stand", BreezingStandBlock(
             AbstractBlock.Settings.create()
                 .registryKey(
                     RegistryKey.of(
                         RegistryKeys.BLOCK,
-                        Identifier.of(ExtraPotions.MOD_ID, "breeze_stand")
+                        Identifier.of(ExtraPotions.MOD_ID, "breezing_stand")
                     )
                 )
                 .strength(0.5f).requiresTool().sounds(BlockSoundGroup.STONE)
@@ -49,7 +49,7 @@ object ModBlocks {
         ExtraPotions.logger.info("Registering Mod Blocks for" + ExtraPotions.MOD_ID)
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(ItemGroupEvents.ModifyEntries { entries: FabricItemGroupEntries ->
-            entries.add(BREEZE_STAND)
+            entries.add(BREEZING_STAND)
         })
     }
 }

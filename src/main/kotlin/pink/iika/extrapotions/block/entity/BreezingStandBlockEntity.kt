@@ -18,13 +18,13 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
-import pink.iika.extrapotions.block.BreezeStandBlock
+import pink.iika.extrapotions.block.BreezingStandBlock
 import pink.iika.extrapotions.item.ModItems
 import pink.iika.extrapotions.recipe.BreezingRecipeRegistry
-import pink.iika.extrapotions.screen.BreezeStandScreenHandler
+import pink.iika.extrapotions.screen.BreezingStandScreenHandler
 
-open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
-    LockableContainerBlockEntity(ModBlockEntities.BREEZE_STAND_BLOCK_ENTITY_TYPE, pos, state), SidedInventory {
+open class BreezingStandBlockEntity(pos: BlockPos, state: BlockState?) :
+    LockableContainerBlockEntity(ModBlockEntities.BREEZING_STAND_BLOCK_ENTITY_TYPE, pos, state), SidedInventory {
     private var inventory: DefaultedList<ItemStack?>
     var brewTime: Int = 0
     private var slotsEmptyLastTick: BooleanArray? = null
@@ -37,8 +37,8 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
         this.propertyDelegate = object : PropertyDelegate {
             override fun get(index: Int): Int {
                 val var10000: Int = when (index) {
-                    0 -> this@BreezeStandBlockEntity.brewTime
-                    1 -> this@BreezeStandBlockEntity.fuel
+                    0 -> this@BreezingStandBlockEntity.brewTime
+                    1 -> this@BreezingStandBlockEntity.fuel
                     else -> 0
                 }
 
@@ -47,8 +47,8 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
 
             override fun set(index: Int, value: Int) {
                 when (index) {
-                    0 -> this@BreezeStandBlockEntity.brewTime = value
-                    1 -> this@BreezeStandBlockEntity.fuel = value
+                    0 -> this@BreezingStandBlockEntity.brewTime = value
+                    1 -> this@BreezingStandBlockEntity.fuel = value
                 }
             }
 
@@ -144,7 +144,7 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
     }
 
     override fun createScreenHandler(syncId: Int, playerInventory: PlayerInventory): ScreenHandler {
-        return BreezeStandScreenHandler(syncId, playerInventory, this, this.propertyDelegate)
+        return BreezingStandScreenHandler(syncId, playerInventory, this, this.propertyDelegate)
     }
 
     companion object {
@@ -160,7 +160,7 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
         private const val DEFAULT_BREW_TIME: Short = 0
         private const val DEFAULT_FUEL: Byte = 0
         private val CONTAINER_NAME_TEXT: Text = Text.translatable("container.breeze_stand")
-        fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: BreezeStandBlockEntity) {
+        fun tick(world: World, pos: BlockPos, state: BlockState, blockEntity: BreezingStandBlockEntity) {
             val itemStack = blockEntity.inventory[4] as ItemStack
             if (blockEntity.fuel <= 0 && itemStack.isOf(ModItems.BREEZE_POWDER)) {
                 blockEntity.fuel = 20
@@ -193,13 +193,13 @@ open class BreezeStandBlockEntity(pos: BlockPos, state: BlockState?) :
             if (blockEntity.slotsEmptyLastTick == null || !bls.contentEquals(blockEntity.slotsEmptyLastTick!!)) {
                 blockEntity.slotsEmptyLastTick = bls
                 var blockState = state
-                if (state.block !is BreezeStandBlock) {
+                if (state.block !is BreezingStandBlock) {
                     return
                 }
 
-                for (i in BreezeStandBlock.BOTTLE_PROPERTIES.indices) {
+                for (i in BreezingStandBlock.BOTTLE_PROPERTIES.indices) {
                     blockState = blockState.with(
-                        BreezeStandBlock.BOTTLE_PROPERTIES[i],
+                        BreezingStandBlock.BOTTLE_PROPERTIES[i],
                         bls[i]
                     ) as BlockState
                 }

@@ -12,8 +12,8 @@ import net.minecraft.util.math.MathHelper
 import pink.iika.extrapotions.ExtraPotions
 
 @Environment(EnvType.CLIENT)
-class BreezeStandScreen(handler: BreezeStandScreenHandler?, inventory: PlayerInventory, title: Text?) :
-    HandledScreen<BreezeStandScreenHandler?>(handler, inventory, title) {
+class BreezingStandScreen(handler: BreezingStandScreenHandler?, inventory: PlayerInventory, title: Text?) :
+    HandledScreen<BreezingStandScreenHandler?>(handler, inventory, title) {
     override fun init() {
         super.init()
         this.titleX = (this.backgroundWidth - this.textRenderer.getWidth(this.title)) / 2
@@ -39,13 +39,13 @@ class BreezeStandScreen(handler: BreezeStandScreenHandler?, inventory: PlayerInv
             256,
             256
         )
-        val k = (this.handler as BreezeStandScreenHandler).fuel
+        val k = (this.handler as BreezingStandScreenHandler).fuel
         val l = MathHelper.clamp((18 * k + 20 - 1) / 20, 0, 18)
         if (l > 0) {
             context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, FUEL_LENGTH_TEXTURE, 18, 4, 0, 0, i + 60, j + 44, l, 4)
         }
 
-        val m = (this.handler as BreezeStandScreenHandler).brewTime
+        val m = (this.handler as BreezingStandScreenHandler).brewTime
         if (m > 0) {
             var n = (28.0f * (1.0f - m.toFloat() / 400.0f)).toInt()
             if (n > 0) {
@@ -82,10 +82,10 @@ class BreezeStandScreen(handler: BreezeStandScreenHandler?, inventory: PlayerInv
     }
 
     companion object {
-        private val FUEL_LENGTH_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breeze_stand/fuel_length")
-        private val BREW_PROGRESS_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breeze_stand/brew_progress")
-        private val BUBBLES_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breeze_stand/bubbles")
-        private val TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "textures/gui/container/breeze_stand.png")
+        private val FUEL_LENGTH_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breezing_stand/fuel_length")
+        private val BREW_PROGRESS_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breezing_stand/brew_progress")
+        private val BUBBLES_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "container/breezing_stand/bubbles")
+        private val TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "textures/gui/container/breezing_stand.png")
         private val BUBBLE_PROGRESS = intArrayOf(29, 24, 20, 16, 11, 6, 0)
     }
 }

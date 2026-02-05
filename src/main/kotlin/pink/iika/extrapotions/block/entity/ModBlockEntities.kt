@@ -10,13 +10,13 @@ import pink.iika.extrapotions.block.ModBlocks
 
 object ModBlockEntities {
     @JvmStatic
-    val BREEZE_STAND_BLOCK_ENTITY_TYPE: BlockEntityType<BreezeStandBlockEntity> =
+    val BREEZING_STAND_BLOCK_ENTITY_TYPE: BlockEntityType<BreezingStandBlockEntity> =
         Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
-            Identifier.of(ExtraPotions.MOD_ID, "breeze_stand"),
+            Identifier.of(ExtraPotions.MOD_ID, "breezing_stand"),
             FabricBlockEntityTypeBuilder.create(
-                ::BreezeStandBlockEntity,
-                ModBlocks.BREEZE_STAND!!
+                ::BreezingStandBlockEntity,
+                ModBlocks.BREEZING_STAND!!
             ).build()
         )
 

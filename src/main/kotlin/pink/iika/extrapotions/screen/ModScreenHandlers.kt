@@ -9,11 +9,11 @@ import pink.iika.extrapotions.ExtraPotions
 
 object ModScreenHandlers {
     @JvmStatic
-    val BREEZE_STAND_BLOCK_SCREEN_HANDLER_TYPE: ScreenHandlerType<BreezeStandScreenHandler> =
+    val BREEZING_STAND_BLOCK_SCREEN_HANDLER_TYPE: ScreenHandlerType<BreezingStandScreenHandler> =
         Registry.register(
             Registries.SCREEN_HANDLER,
-            Identifier.of(ExtraPotions.MOD_ID, "breeze_stand_screen_handler"),
-            ScreenHandlerType(::BreezeStandScreenHandler, FeatureSet.empty())
+            Identifier.of(ExtraPotions.MOD_ID, "breezing_stand_screen_handler"),
+            ScreenHandlerType(::BreezingStandScreenHandler, FeatureSet.empty())
         )
 
 

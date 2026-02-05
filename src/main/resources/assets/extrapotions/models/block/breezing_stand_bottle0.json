@@ -1,7 +1,7 @@
 {
     "textures": {
-        "particle": "extrapotions:block/breeze_stand",
-        "stand": "extrapotions:block/breeze_stand"
+        "particle": "extrapotions:block/breezing_stand",
+        "stand": "extrapotions:block/breezing_stand"
     },
     "elements": [
         {   "from": [ 8, 0, 8 ],

@@ -10,7 +10,6 @@ import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.recipe.BrewingRecipeRegistry
-import net.minecraft.registry.tag.ItemTags
 import net.minecraft.screen.ArrayPropertyDelegate
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
@@ -19,12 +18,12 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import pink.iika.extrapotions.item.ModItems
 
-class BreezeStandScreenHandler @JvmOverloads constructor(
+class BreezingStandScreenHandler @JvmOverloads constructor(
     syncId: Int,
     playerInventory: PlayerInventory,
     inventory: Inventory = SimpleInventory(5),
     propertyDelegate: PropertyDelegate = ArrayPropertyDelegate(2)
-) : ScreenHandler(ModScreenHandlers.BREEZE_STAND_BLOCK_SCREEN_HANDLER_TYPE, syncId) {
+) : ScreenHandler(ModScreenHandlers.BREEZING_STAND_BLOCK_SCREEN_HANDLER_TYPE, syncId) {
     private val inventory: Inventory
     private val propertyDelegate: PropertyDelegate
     private val ingredientSlot: Slot

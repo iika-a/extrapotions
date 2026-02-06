@@ -120,7 +120,7 @@ open class BreezingStandBlockEntity(pos: BlockPos, state: BlockState?) :
                 return stack.isOf(ModItems.BREEZE_POWDER)
             }
             else -> {
-                return (stack.isOf(Items.POTION) || stack.isOf(Items.SPLASH_POTION) || stack.isOf(Items.LINGERING_POTION) || stack.isOf(
+                return (stack.isOf(ModItems.AMETHYST_POTION) || stack.isOf(Items.SPLASH_POTION) || stack.isOf(Items.LINGERING_POTION) || stack.isOf(
                     ModItems.AMETHYST_BOTTLE
                 )) && this.getStack(slot).isEmpty
             }

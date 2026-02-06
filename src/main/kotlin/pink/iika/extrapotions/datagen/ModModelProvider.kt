@@ -17,5 +17,8 @@ class ModModelProvider(output: FabricDataOutput): FabricModelProvider(output) {
         gen.register(ModItems.BREEZE_POWDER, Models.GENERATED)
         gen.register(ModItems.AMETHYST_BOTTLE, Models.GENERATED)
         gen.register(ModItems.WARPED_WART, Models.GENERATED)
+        gen.registerPotion(ModItems.AMETHYST_POTION)
+        gen.registerPotion(ModItems.AMETHYST_SPLASH_POTION)
+        gen.registerPotion(ModItems.AMETHYST_LINGERING_POTION)
     }
 }

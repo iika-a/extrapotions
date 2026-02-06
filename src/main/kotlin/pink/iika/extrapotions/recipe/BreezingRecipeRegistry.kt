@@ -14,6 +14,7 @@ import net.minecraft.registry.Registries
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.resource.featuretoggle.FeatureSet
+import pink.iika.extrapotions.item.ModItems
 
 class BreezingRecipeRegistry internal constructor(
     private val potionTypes: List<Ingredient>,
@@ -241,13 +242,13 @@ class BreezingRecipeRegistry internal constructor(
                 potion.key.orElseThrow()
 
             // Potion containers
-            builder.registerPotionType(Items.POTION)
-            builder.registerPotionType(Items.SPLASH_POTION)
-            builder.registerPotionType(Items.LINGERING_POTION)
+            builder.registerPotionType(ModItems.AMETHYST_POTION)
+            builder.registerPotionType(ModItems.AMETHYST_SPLASH_POTION)
+            builder.registerPotionType(ModItems.AMETHYST_LINGERING_POTION)
 
             // Bottle upgrades
-            builder.registerItemRecipe(Items.POTION, Items.GUNPOWDER, Items.SPLASH_POTION)
-            builder.registerItemRecipe(Items.SPLASH_POTION, Items.DRAGON_BREATH, Items.LINGERING_POTION)
+            builder.registerItemRecipe(ModItems.AMETHYST_POTION, Items.GUNPOWDER, ModItems.AMETHYST_SPLASH_POTION)
+            builder.registerItemRecipe(ModItems.AMETHYST_SPLASH_POTION, Items.DRAGON_BREATH, ModItems.AMETHYST_LINGERING_POTION)
 
             // Base conversions
             builder.registerPotionRecipe(key(Potions.WATER), Items.GLOWSTONE_DUST, key(Potions.THICK))

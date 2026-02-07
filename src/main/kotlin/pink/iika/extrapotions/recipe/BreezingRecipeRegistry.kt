@@ -15,6 +15,7 @@ import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.resource.featuretoggle.FeatureSet
 import pink.iika.extrapotions.item.ModItems
+import pink.iika.extrapotions.potion.ModPotions
 
 class BreezingRecipeRegistry internal constructor(
     private val potionTypes: List<Ingredient>,
@@ -37,7 +38,7 @@ class BreezingRecipeRegistry internal constructor(
 
     fun isItemRecipeIngredient(stack: ItemStack): Boolean {
         for (recipe in this.itemRecipes) {
-            if (recipe.ingredient.test(stack)) {
+            if (recipe.ingredient1.test(stack) || recipe.ingredient2.test(stack)) {
                 return true
             }
         }
@@ -47,7 +48,7 @@ class BreezingRecipeRegistry internal constructor(
 
     fun isPotionRecipeIngredient(stack: ItemStack): Boolean {
         for (recipe in this.potionRecipes) {
-            if (recipe.ingredient.test(stack)) {
+            if (recipe.ingredient1.test(stack) || recipe.ingredient2.test(stack)) {
                 return true
             }
         }
@@ -64,19 +65,19 @@ class BreezingRecipeRegistry internal constructor(
         return false
     }
 
-    fun hasRecipe(input: ItemStack, ingredient: ItemStack): Boolean {
+    fun hasRecipe(input: ItemStack, ingredient1: ItemStack, ingredient2: ItemStack): Boolean {
         return if (!this.isPotionType(input)) {
             false
         } else {
-            this.hasItemRecipe(input, ingredient) || this.hasPotionRecipe(input, ingredient)
+            this.hasItemRecipe(input, ingredient1, ingredient2) || this.hasPotionRecipe(input, ingredient1, ingredient2)
         }
     }
 
-    fun hasItemRecipe(input: ItemStack, ingredient: ItemStack): Boolean {
+    fun hasItemRecipe(input: ItemStack, ingredient1: ItemStack, ingredient2: ItemStack): Boolean {
         val inputKey = Registries.ITEM.getKey(input.item).orElse(null) ?: return false
 
         for (recipe in itemRecipes) {
-            if (recipe.from == inputKey && recipe.ingredient.test(ingredient)) {
+            if (recipe.from == inputKey && twoIngredientTest(recipe, ingredient1, ingredient2)) {
                 return true
             }
         }
@@ -84,7 +85,7 @@ class BreezingRecipeRegistry internal constructor(
         return false
     }
 
-    fun hasPotionRecipe(input: ItemStack, ingredient: ItemStack): Boolean {
+    fun hasPotionRecipe(input: ItemStack, ingredient1: ItemStack, ingredient2: ItemStack): Boolean {
         val potionEntry = input
             .getOrDefault(
                 DataComponentTypes.POTION_CONTENTS,
@@ -97,7 +98,7 @@ class BreezingRecipeRegistry internal constructor(
         val potionKey = potionEntry.key.orElse(null) ?: return false
 
         for (recipe in potionRecipes) {
-            if (recipe.from == potionKey && recipe.ingredient.test(ingredient)) {
+            if (recipe.from == potionKey && twoIngredientTest(recipe, ingredient1, ingredient2)) {
                 return true
             }
         }
@@ -105,7 +106,7 @@ class BreezingRecipeRegistry internal constructor(
         return false
     }
 
-    fun craft(ingredient: ItemStack, input: ItemStack): ItemStack {
+    fun craft(ingredient1: ItemStack, ingredient2: ItemStack, input: ItemStack): ItemStack {
         if (input.isEmpty) return input
 
         val potionEntry = input
@@ -121,7 +122,7 @@ class BreezingRecipeRegistry internal constructor(
         val inputKey = Registries.ITEM.getKey(input.item).orElseThrow()
 
         for (recipe in itemRecipes) {
-            if (recipe.from == inputKey && recipe.ingredient.test(ingredient)) {
+            if (recipe.from == inputKey && twoIngredientTest(recipe, ingredient1, ingredient2)) {
                 return PotionContentsComponent.createStack(
                     Registries.ITEM.get(recipe.to),
                     potionEntry
@@ -132,7 +133,7 @@ class BreezingRecipeRegistry internal constructor(
         // Potion recipes: potion changes, bottle stays
         for (recipe in potionRecipes) {
             if (recipe.from == potionEntry.key.orElseThrow() &&
-                recipe.ingredient.test(ingredient)
+                twoIngredientTest(recipe, ingredient1, ingredient2)
             ) {
                 val outputEntry = Registries.POTION.getOrThrow(recipe.to)
 
@@ -146,14 +147,19 @@ class BreezingRecipeRegistry internal constructor(
         return input
     }
 
+    private fun <T : Any> twoIngredientTest(recipe: Recipe<T>, ingredient1: ItemStack, ingredient2: ItemStack): Boolean {
+        val scenario1 = recipe.ingredient1.test(ingredient1) && recipe.ingredient2.test(ingredient2)
+        val scenario2 = recipe.ingredient1.test(ingredient2) && recipe.ingredient2.test(ingredient1)
+        return scenario1 || scenario2
+    }
 
     class Builder(private val enabledFeatures: FeatureSet?) : FabricBrewingRecipeRegistryBuilder {
         private val potionTypes: MutableList<Ingredient> = mutableListOf()
         private val potionRecipes: MutableList<Recipe<Potion>> = mutableListOf()
         private val itemRecipes: MutableList<Recipe<Item>> = mutableListOf()
 
-        fun registerItemRecipe(input: Item, ingredient: Item, output: Item) {
-            if (input.isEnabled(this.enabledFeatures) && ingredient.isEnabled(this.enabledFeatures) && output.isEnabled(
+        fun registerItemRecipe(input: Item, ingredient1: Item, ingredient2: Item, output: Item) {
+            if (input.isEnabled(this.enabledFeatures) && ingredient1.isEnabled(this.enabledFeatures) && ingredient2.isEnabled(this.enabledFeatures) && output.isEnabled(
                     this.enabledFeatures
                 )
             ) {
@@ -162,7 +168,8 @@ class BreezingRecipeRegistry internal constructor(
                 this.itemRecipes.add(
                     Recipe(
                         Registries.ITEM.getKey(input).orElseThrow(),
-                        Ingredient.ofItem(ingredient),
+                        Ingredient.ofItem(ingredient1),
+                        Ingredient.ofItem(ingredient2),
                         Registries.ITEM.getKey(output).orElseThrow()
                     )
                 )
@@ -178,25 +185,27 @@ class BreezingRecipeRegistry internal constructor(
 
         fun registerPotionRecipe(
             input: RegistryKey<Potion>,
-            ingredient: Item,
+            ingredient1: Item,
+            ingredient2: Item,
             output: RegistryKey<Potion>
         ) {
-            if (ingredient.isEnabled(enabledFeatures)) {
+            if (ingredient1.isEnabled(enabledFeatures) && ingredient2.isEnabled(enabledFeatures)) {
                 potionRecipes.add(
                     Recipe(
                         input,
-                        Ingredient.ofItem(ingredient),
+                        Ingredient.ofItem(ingredient1),
+                        Ingredient.ofItem(ingredient2),
                         output
                     )
                 )
             }
         }
 
-        fun registerRecipes(ingredient: Item, potion: RegistryKey<Potion>) {
+        fun registerRecipes(ingredient1: Item, ingredient2: Item, potion: RegistryKey<Potion>) {
             val potionValue = Registries.POTION.get(potion)
             if (potionValue!!.isEnabled(enabledFeatures)) {
-                registerPotionRecipe(Potions.WATER.key.get(), ingredient, Potions.MUNDANE.key.get())
-                registerPotionRecipe(Potions.AWKWARD.key.get(), ingredient, potion)
+                registerPotionRecipe(Potions.WATER.key.get(), ingredient1, ingredient2, Potions.MUNDANE.key.get())
+                registerPotionRecipe(Potions.AWKWARD.key.get(), ingredient1, ingredient2, potion)
             }
         }
 
@@ -219,7 +228,8 @@ class BreezingRecipeRegistry internal constructor(
 
     internal data class Recipe<T>(
         val from: RegistryKey<T>,
-        val ingredient: Ingredient,
+        val ingredient1: Ingredient,
+        val ingredient2: Ingredient,
         val to: RegistryKey<T>
     )
 
@@ -247,81 +257,32 @@ class BreezingRecipeRegistry internal constructor(
             builder.registerPotionType(ModItems.AMETHYST_LINGERING_POTION)
 
             // Bottle upgrades
-            builder.registerItemRecipe(ModItems.AMETHYST_POTION, Items.GUNPOWDER, ModItems.AMETHYST_SPLASH_POTION)
-            builder.registerItemRecipe(ModItems.AMETHYST_SPLASH_POTION, Items.DRAGON_BREATH, ModItems.AMETHYST_LINGERING_POTION)
+            builder.registerItemRecipe(ModItems.AMETHYST_POTION, Items.GUNPOWDER, Items.WIND_CHARGE, ModItems.AMETHYST_SPLASH_POTION)
+            builder.registerItemRecipe(ModItems.AMETHYST_SPLASH_POTION, Items.DRAGON_BREATH, Items.WIND_CHARGE, ModItems.AMETHYST_LINGERING_POTION)
 
             // Base conversions
-            builder.registerPotionRecipe(key(Potions.WATER), Items.GLOWSTONE_DUST, key(Potions.THICK))
-            builder.registerPotionRecipe(key(Potions.WATER), Items.REDSTONE, key(Potions.MUNDANE))
-            builder.registerPotionRecipe(key(Potions.WATER), Items.NETHER_WART, key(Potions.AWKWARD))
+            builder.registerPotionRecipe(key(Potions.WATER), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(Potions.THICK))
+            builder.registerPotionRecipe(key(Potions.WATER), Items.REDSTONE, Items.WIND_CHARGE, key(Potions.MUNDANE))
+            builder.registerPotionRecipe(key(Potions.WATER), Items.NETHER_WART, Items.WIND_CHARGE, key(Potions.AWKWARD))
+            builder.registerPotionRecipe(key(Potions.WATER), ModItems.WARPED_WART, Items.WIND_CHARGE, key(ModPotions.GALE))
 
-            builder.registerRecipes(Items.BREEZE_ROD, key(Potions.WIND_CHARGED))
-            builder.registerRecipes(Items.SLIME_BLOCK, key(Potions.OOZING))
-            builder.registerRecipes(Items.STONE, key(Potions.INFESTED))
-            builder.registerRecipes(Items.COBWEB, key(Potions.WEAVING))
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.GLOWSTONE, Items.GLOW_BERRIES, key(ModPotions.GLOWING))
+            builder.registerPotionRecipe(key(ModPotions.GLOWING), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_GLOWING))
 
-            builder.registerPotionRecipe(key(Potions.AWKWARD), Items.GOLDEN_CARROT, key(Potions.NIGHT_VISION))
-            builder.registerPotionRecipe(key(Potions.NIGHT_VISION), Items.REDSTONE, key(Potions.LONG_NIGHT_VISION))
-            builder.registerPotionRecipe(key(Potions.NIGHT_VISION), Items.FERMENTED_SPIDER_EYE, key(Potions.INVISIBILITY))
-            builder.registerPotionRecipe(
-                key(Potions.LONG_NIGHT_VISION),
-                Items.FERMENTED_SPIDER_EYE,
-                key(Potions.LONG_INVISIBILITY)
-            )
-            builder.registerPotionRecipe(key(Potions.INVISIBILITY), Items.REDSTONE, key(Potions.LONG_INVISIBILITY))
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.GOLD_INGOT, Items.APPLE, key(ModPotions.ABSORPTION))
+            builder.registerPotionRecipe(key(ModPotions.ABSORPTION), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_ABSORPTION))
+            builder.registerPotionRecipe(key(ModPotions.ABSORPTION), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_ABSORPTION))
 
-            builder.registerRecipes(Items.MAGMA_CREAM, key(Potions.FIRE_RESISTANCE))
-            builder.registerPotionRecipe(key(Potions.FIRE_RESISTANCE), Items.REDSTONE, key(Potions.LONG_FIRE_RESISTANCE))
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.SHULKER_SHELL, Items.PHANTOM_MEMBRANE, key(ModPotions.LEVITATION))
+            builder.registerPotionRecipe(key(ModPotions.LEVITATION), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_LEVITATION))
+            builder.registerPotionRecipe(key(ModPotions.LEVITATION), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_LEVITATION))
 
-            builder.registerRecipes(Items.RABBIT_FOOT, key(Potions.LEAPING))
-            builder.registerPotionRecipe(key(Potions.LEAPING), Items.REDSTONE, key(Potions.LONG_LEAPING))
-            builder.registerPotionRecipe(key(Potions.LEAPING), Items.GLOWSTONE_DUST, key(Potions.STRONG_LEAPING))
-            builder.registerPotionRecipe(key(Potions.LEAPING), Items.FERMENTED_SPIDER_EYE, key(Potions.SLOWNESS))
-            builder.registerPotionRecipe(key(Potions.LONG_LEAPING), Items.FERMENTED_SPIDER_EYE, key(Potions.LONG_SLOWNESS))
-            builder.registerPotionRecipe(key(Potions.SLOWNESS), Items.REDSTONE, key(Potions.LONG_SLOWNESS))
-            builder.registerPotionRecipe(key(Potions.SLOWNESS), Items.GLOWSTONE_DUST, key(Potions.STRONG_SLOWNESS))
-
-            builder.registerPotionRecipe(key(Potions.AWKWARD), Items.TURTLE_HELMET, key(Potions.TURTLE_MASTER))
-            builder.registerPotionRecipe(key(Potions.TURTLE_MASTER), Items.REDSTONE, key(Potions.LONG_TURTLE_MASTER))
-            builder.registerPotionRecipe(key(Potions.TURTLE_MASTER), Items.GLOWSTONE_DUST, key(Potions.STRONG_TURTLE_MASTER))
-
-            builder.registerPotionRecipe(key(Potions.SWIFTNESS), Items.FERMENTED_SPIDER_EYE, key(Potions.SLOWNESS))
-            builder.registerPotionRecipe(key(Potions.LONG_SWIFTNESS), Items.FERMENTED_SPIDER_EYE, key(Potions.LONG_SLOWNESS))
-
-            builder.registerRecipes(Items.SUGAR, key(Potions.SWIFTNESS))
-            builder.registerPotionRecipe(key(Potions.SWIFTNESS), Items.REDSTONE, key(Potions.LONG_SWIFTNESS))
-            builder.registerPotionRecipe(key(Potions.SWIFTNESS), Items.GLOWSTONE_DUST, key(Potions.STRONG_SWIFTNESS))
-
-            builder.registerPotionRecipe(key(Potions.AWKWARD), Items.PUFFERFISH, key(Potions.WATER_BREATHING))
-            builder.registerPotionRecipe(key(Potions.WATER_BREATHING), Items.REDSTONE, key(Potions.LONG_WATER_BREATHING))
-
-            builder.registerRecipes(Items.GLISTERING_MELON_SLICE, key(Potions.HEALING))
-            builder.registerPotionRecipe(key(Potions.HEALING), Items.GLOWSTONE_DUST, key(Potions.STRONG_HEALING))
-            builder.registerPotionRecipe(key(Potions.HEALING), Items.FERMENTED_SPIDER_EYE, key(Potions.HARMING))
-            builder.registerPotionRecipe(key(Potions.STRONG_HEALING), Items.FERMENTED_SPIDER_EYE, key(Potions.STRONG_HARMING))
-            builder.registerPotionRecipe(key(Potions.HARMING), Items.GLOWSTONE_DUST, key(Potions.STRONG_HARMING))
-
-            builder.registerPotionRecipe(key(Potions.POISON), Items.FERMENTED_SPIDER_EYE, key(Potions.HARMING))
-            builder.registerPotionRecipe(key(Potions.LONG_POISON), Items.FERMENTED_SPIDER_EYE, key(Potions.HARMING))
-            builder.registerPotionRecipe(key(Potions.STRONG_POISON), Items.FERMENTED_SPIDER_EYE, key(Potions.STRONG_HARMING))
-
-            builder.registerRecipes(Items.SPIDER_EYE, key(Potions.POISON))
-            builder.registerPotionRecipe(key(Potions.POISON), Items.REDSTONE, key(Potions.LONG_POISON))
-            builder.registerPotionRecipe(key(Potions.POISON), Items.GLOWSTONE_DUST, key(Potions.STRONG_POISON))
-
-            builder.registerRecipes(Items.GHAST_TEAR, key(Potions.REGENERATION))
-            builder.registerPotionRecipe(key(Potions.REGENERATION), Items.REDSTONE, key(Potions.LONG_REGENERATION))
-            builder.registerPotionRecipe(key(Potions.REGENERATION), Items.GLOWSTONE_DUST, key(Potions.STRONG_REGENERATION))
-
-            builder.registerRecipes(Items.BLAZE_POWDER, key(Potions.STRENGTH))
-            builder.registerPotionRecipe(key(Potions.STRENGTH), Items.REDSTONE, key(Potions.LONG_STRENGTH))
-            builder.registerPotionRecipe(key(Potions.STRENGTH), Items.GLOWSTONE_DUST, key(Potions.STRONG_STRENGTH))
-
-            builder.registerPotionRecipe(key(Potions.WATER), Items.FERMENTED_SPIDER_EYE, key(Potions.WEAKNESS))
-            builder.registerPotionRecipe(key(Potions.WEAKNESS), Items.REDSTONE, key(Potions.LONG_WEAKNESS))
-
-            builder.registerPotionRecipe(key(Potions.AWKWARD), Items.PHANTOM_MEMBRANE, key(Potions.SLOW_FALLING))
-            builder.registerPotionRecipe(key(Potions.SLOW_FALLING), Items.REDSTONE, key(Potions.LONG_SLOW_FALLING))
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.GOLD_INGOT, Items.IRON_INGOT, key(Potions.LUCK))
+            builder.registerPotionRecipe(key(Potions.LUCK), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_LUCK))
+            builder.registerPotionRecipe(key(Potions.LUCK), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_LUCK))
+            builder.registerPotionRecipe(key(Potions.LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.UNLUCK))
+            builder.registerPotionRecipe(key(ModPotions.LONG_LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.LONG_UNLUCK))
+            builder.registerPotionRecipe(key(ModPotions.STRONG_LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.STRONG_UNLUCK))
         }
     }
 }

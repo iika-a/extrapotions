@@ -13,9 +13,9 @@ import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
 
-/*object ModStatusEffects {
+object ModStatusEffects {
 
-    private const val DARKNESS_PADDING_DURATION = 22
+    //private const val DARKNESS_PADDING_DURATION = 22
 
     private fun register(id: String, effect: StatusEffect): RegistryEntry<StatusEffect> {
         return Registry.registerReference(
@@ -25,6 +25,7 @@ import net.minecraft.util.math.MathHelper
         )
     }
 
+    /*
     @JvmField
     val SPEED = register(
         "speed",
@@ -389,4 +390,6 @@ import net.minecraft.util.math.MathHelper
     )
 
     fun registerAndGetDefault(): RegistryEntry<StatusEffect> = SPEED
-}*/
+
+     */
+}

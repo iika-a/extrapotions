@@ -1,36 +1,143 @@
 package pink.iika.extrapotions.potion
 
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.item.ItemGroups
 import net.minecraft.potion.Potion
+import net.minecraft.potion.Potions
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.util.Identifier
+import pink.iika.extrapotions.ExtraPotions
+import pink.iika.extrapotions.block.ModBlocks.BREEZING_STAND
 
 object ModPotions {
 
     private fun register(name: String, potion: Potion): RegistryEntry<Potion> {
         return Registry.registerReference(
             Registries.POTION,
-            Identifier.ofVanilla(name),
+            Identifier.of(ExtraPotions.MOD_ID, name),
             potion
         )
     }
 
     @JvmField
-    val WATER = register("water", Potion("water"))
+    val GALE = register("gale", Potion("gale"))
 
     @JvmField
-    val MUNDANE = register("mundane", Potion("mundane"))
+    val GLOWING = register(
+        "glowing",
+        Potion(
+            "glowing",
+            StatusEffectInstance(StatusEffects.GLOWING, 3600)
+        )
+    )
+    @JvmField
+    val LONG_GLOWING = register(
+        "long_glowing",
+        Potion(
+            "glowing",
+            StatusEffectInstance(StatusEffects.GLOWING, 9600)
+        )
+    )
 
     @JvmField
-    val THICK = register("thick", Potion("thick"))
+    val ABSORPTION = register(
+        "absorption",
+        Potion(
+            "absorption",
+            StatusEffectInstance(StatusEffects.ABSORPTION, 3600)
+        )
+    )
+    @JvmField
+    val LONG_ABSORPTION = register(
+        "long_absorption",
+        Potion(
+            "absorption",
+            StatusEffectInstance(StatusEffects.ABSORPTION, 9600)
+        )
+    )
+    @JvmField
+    val STRONG_ABSORPTION = register(
+        "strong_absorption",
+        Potion(
+            "absorption",
+            StatusEffectInstance(StatusEffects.ABSORPTION, 1800, 1)
+        )
+    )
 
     @JvmField
-    val AWKWARD = register("awkward", Potion("awkward"))
+    val LEVITATION = register(
+        "levitation",
+        Potion(
+            "levitation",
+            StatusEffectInstance(StatusEffects.LEVITATION, 150)
+        )
+    )
+    @JvmField
+    val LONG_LEVITATION = register(
+        "long_levitation",
+        Potion(
+            "levitation",
+            StatusEffectInstance(StatusEffects.LEVITATION, 200)
+        )
+    )
+    @JvmField
+    val STRONG_LEVITATION = register(
+        "strong_levitation",
+        Potion(
+            "levitation",
+            StatusEffectInstance(StatusEffects.LEVITATION, 100, 1)
+        )
+    )
 
+    @JvmField
+    val LONG_LUCK = register(
+        "long_luck",
+        Potion(
+            "luck",
+            StatusEffectInstance(StatusEffects.LUCK, 12000)
+        )
+    )
+    @JvmField
+    val STRONG_LUCK = register(
+        "strong_luck",
+        Potion(
+            "luck",
+            StatusEffectInstance(StatusEffects.LUCK, 4800, 1)
+        )
+    )
+
+    @JvmField
+    val UNLUCK = register(
+        "unluck",
+        Potion(
+            "unluck",
+            StatusEffectInstance(StatusEffects.UNLUCK, 6000)
+        )
+    )
+    @JvmField
+    val LONG_UNLUCK = register(
+        "long_unluck",
+        Potion(
+            "unluck",
+            StatusEffectInstance(StatusEffects.UNLUCK, 12000)
+        )
+    )
+    @JvmField
+    val STRONG_UNLUCK = register(
+        "strong_unluck",
+        Potion(
+            "unluck",
+            StatusEffectInstance(StatusEffects.UNLUCK, 4800, 1)
+        )
+    )
+
+    /*
     @JvmField
     val NIGHT_VISION = register(
         "night_vision",
@@ -411,6 +518,11 @@ object ModPotions {
             StatusEffectInstance(StatusEffects.INFESTED, 3600)
         )
     )
+    */
 
-    fun registerAndGetDefault(): RegistryEntry<Potion> = WATER
+    fun registerAndGetDefault(): RegistryEntry<Potion> = Potions.WATER
+
+    fun registerModPotions() {
+        ExtraPotions.logger.info("Registering Mod Potions for" + ExtraPotions.MOD_ID)
+    }
 }

@@ -8,8 +8,6 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventory
 import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.recipe.BrewingRecipeRegistry
 import net.minecraft.screen.ArrayPropertyDelegate
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
@@ -17,28 +15,42 @@ import net.minecraft.screen.slot.Slot
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import pink.iika.extrapotions.item.ModItems
+import pink.iika.extrapotions.recipe.BreezingRecipeRegistry
 
 class BreezingStandScreenHandler @JvmOverloads constructor(
     syncId: Int,
     playerInventory: PlayerInventory,
-    inventory: Inventory = SimpleInventory(5),
-    propertyDelegate: PropertyDelegate = ArrayPropertyDelegate(2)
+    inventory: Inventory = SimpleInventory(6),
+    propertyDelegate: PropertyDelegate = ArrayPropertyDelegate(2),
+    val brewingRecipeRegistry: BreezingRecipeRegistry
 ) : ScreenHandler(ModScreenHandlers.BREEZING_STAND_BLOCK_SCREEN_HANDLER_TYPE, syncId) {
     private val inventory: Inventory
     private val propertyDelegate: PropertyDelegate
-    private val ingredientSlot: Slot
+    private val ingredientSlot1: Slot
+    private val ingredientSlot2: Slot
+
+    constructor(
+        syncId: Int,
+        playerInventory: PlayerInventory
+    ) : this(
+        syncId,
+        playerInventory,
+        SimpleInventory(6),
+        ArrayPropertyDelegate(2),
+        BreezingRecipeRegistry.EMPTY
+    )
 
     init {
-        checkSize(inventory, 5)
+        checkSize(inventory, 6)
         checkDataCount(propertyDelegate, 2)
         this.inventory = inventory
         this.propertyDelegate = propertyDelegate
-        val brewingRecipeRegistry = playerInventory.player.entityWorld.brewingRecipeRegistry
         this.addSlot(PotionSlot(inventory, 0, 56, 51))
         this.addSlot(PotionSlot(inventory, 1, 79, 58))
         this.addSlot(PotionSlot(inventory, 2, 102, 51))
-        this.ingredientSlot = this.addSlot(IngredientSlot(brewingRecipeRegistry, inventory, 3, 79, 17))
-        this.addSlot(FuelSlot(inventory, 4, 17, 17))
+        this.ingredientSlot1 = this.addSlot(IngredientSlot(brewingRecipeRegistry, inventory, 3, 71, 17))
+        this.ingredientSlot2 = this.addSlot(IngredientSlot(brewingRecipeRegistry, inventory, 4, 87, 17))
+        this.addSlot(FuelSlot(inventory, 5, 17, 17))
         this.addProperties(propertyDelegate)
         this.addPlayerSlots(playerInventory, 8, 84)
     }
@@ -47,65 +59,56 @@ class BreezingStandScreenHandler @JvmOverloads constructor(
         return this.inventory.canPlayerUse(player)
     }
 
-    override fun quickMove(player: PlayerEntity?, slot: Int): ItemStack {
-        var itemStack = ItemStack.EMPTY
-        val slot2 = this.slots[slot]
-        if (slot2 != null && slot2.hasStack()) {
-            val itemStack2 = slot2.stack
-            itemStack = itemStack2.copy()
-            if ((slot !in 0..2) && slot != 3 && slot != 4) {
-                if (FuelSlot.matches(itemStack)) {
-                    if (this.insertItem(
-                            itemStack2,
-                            4,
-                            5,
-                            false
-                        ) || this.ingredientSlot.canInsert(itemStack2) && !this.insertItem(itemStack2, 3, 4, false)
-                    ) {
-                        return ItemStack.EMPTY
+    override fun quickMove(player: PlayerEntity, slotIndex: Int): ItemStack {
+        val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
+        if (!slot.hasStack()) return ItemStack.EMPTY
+
+        val stack = slot.stack
+        val original = stack.copy()
+
+        when {
+            slotIndex >= 6 -> {
+                when {
+                    brewingRecipeRegistry.isValidIngredient(stack) -> {
+                        if (!this.insertItem(stack, 3, 5, false)) return ItemStack.EMPTY
                     }
-                } else if (this.ingredientSlot.canInsert(itemStack2)) {
-                    if (!this.insertItem(itemStack2, 3, 4, false)) {
-                        return ItemStack.EMPTY
+
+                    FuelSlot.matches(stack) -> {
+                        if (!this.insertItem(stack, 5, 6, false)) return ItemStack.EMPTY
                     }
-                } else if (PotionSlot.matches(itemStack)) {
-                    if (!this.insertItem(itemStack2, 0, 3, false)) {
-                        return ItemStack.EMPTY
+
+                    PotionSlot.matches(stack) -> {
+                        if (!this.insertItem(stack, 0, 3, false)) return ItemStack.EMPTY
                     }
-                } else if (slot in 5..<32) {
-                    if (!this.insertItem(itemStack2, 32, 41, false)) {
-                        return ItemStack.EMPTY
+
+                    slotIndex in 6 until 32 -> {
+                        if (!this.insertItem(stack, 33, 42, false)) return ItemStack.EMPTY
                     }
-                } else if (slot in 32..<41) {
-                    if (!this.insertItem(itemStack2, 5, 32, false)) {
-                        return ItemStack.EMPTY
+
+                    slotIndex in 32 until 42 -> {
+                        if (!this.insertItem(stack, 6, 33, false)) return ItemStack.EMPTY
                     }
-                } else if (!this.insertItem(itemStack2, 5, 41, false)) {
-                    return ItemStack.EMPTY
                 }
-            } else {
-                if (!this.insertItem(itemStack2, 5, 41, true)) {
-                    return ItemStack.EMPTY
-                }
-
-                slot2.onQuickTransfer(itemStack2, itemStack)
             }
 
-            if (itemStack2.isEmpty) {
-                slot2.stack = ItemStack.EMPTY
-            } else {
-                slot2.markDirty()
+            else -> {
+                if (!this.insertItem(stack, 6, 42, true)) return ItemStack.EMPTY
+                slot.onQuickTransfer(stack, original)
             }
-
-            if (itemStack2.count == itemStack.count) {
-                return ItemStack.EMPTY
-            }
-
-            slot2.onTakeItem(player, itemStack)
         }
 
-        return itemStack
+        if (stack.isEmpty) {
+            slot.stack = ItemStack.EMPTY
+        } else {
+            slot.markDirty()
+        }
+
+        if (stack.count == original.count) return ItemStack.EMPTY
+
+        slot.onTakeItem(player, stack)
+        return original
     }
+
 
     val fuel: Int
         get() = this.propertyDelegate.get(1)
@@ -140,7 +143,7 @@ class BreezingStandScreenHandler @JvmOverloads constructor(
 
         companion object {
             fun matches(stack: ItemStack): Boolean {
-                return stack.isOf(Items.POTION) || stack.isOf(Items.SPLASH_POTION) || stack.isOf(Items.LINGERING_POTION) || stack.isOf(
+                return stack.isOf(ModItems.AMETHYST_POTION) || stack.isOf(ModItems.AMETHYST_SPLASH_POTION) || stack.isOf(ModItems.AMETHYST_LINGERING_POTION) || stack.isOf(
                     ModItems.AMETHYST_BOTTLE
                 )
             }
@@ -148,13 +151,13 @@ class BreezingStandScreenHandler @JvmOverloads constructor(
     }
 
     internal class IngredientSlot(
-        private val brewingRecipeRegistry: BrewingRecipeRegistry,
+        private val brewingRecipeRegistry: BreezingRecipeRegistry,
         inventory: Inventory?,
         index: Int,
         x: Int,
         y: Int
     ) : Slot(inventory, index, x, y) {
-        override fun canInsert(stack: ItemStack?): Boolean {
+        override fun canInsert(stack: ItemStack): Boolean {
             return this.brewingRecipeRegistry.isValidIngredient(stack)
         }
     }

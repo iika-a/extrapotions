@@ -7,6 +7,7 @@ import pink.iika.extrapotions.block.ModBlocks
 import pink.iika.extrapotions.block.entity.ModBlockEntities
 import pink.iika.extrapotions.item.ModItemGroups
 import pink.iika.extrapotions.item.ModItems
+import pink.iika.extrapotions.potion.ModPotions
 
 object ExtraPotions : ModInitializer {
 	const val MOD_ID = "extrapotions"
@@ -18,5 +19,6 @@ object ExtraPotions : ModInitializer {
 		ModItemGroups.registerModItemGroups()
 		ModBlocks.registerModBlocks()
 		ModBlockEntities.registerModBlockEntities()
+		ModPotions.registerModPotions()
 	}
 }

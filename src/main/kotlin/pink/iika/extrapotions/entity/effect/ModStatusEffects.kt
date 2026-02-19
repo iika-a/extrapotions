@@ -12,6 +12,8 @@ import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
+import pink.iika.extrapotions.ExtraPotions
+import pink.iika.extrapotions.entity.effect.NourishmentStatusEffect
 
 object ModStatusEffects {
 
@@ -20,24 +22,22 @@ object ModStatusEffects {
     private fun register(id: String, effect: StatusEffect): RegistryEntry<StatusEffect> {
         return Registry.registerReference(
             Registries.STATUS_EFFECT,
-            Identifier.ofVanilla(id),
+            Identifier.of(ExtraPotions.MOD_ID, id),
             effect
         )
     }
 
-    /*
+
     @JvmField
-    val SPEED = register(
-        "speed",
-        ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x33EBFF)
-            .addAttributeModifier(
-                EntityAttributes.MOVEMENT_SPEED,
-                Identifier.ofVanilla("effect.speed"),
-                0.2,
-                Operation.ADD_MULTIPLIED_TOTAL
-            )
+    val NOURISHMENT = register(
+        "nourishment",
+        NourishmentStatusEffect(
+            StatusEffectCategory.BENEFICIAL,
+            0xffd36b
+        )
     )
 
+    /*
     @JvmField
     val SLOWNESS = register(
         "slowness",
@@ -392,4 +392,8 @@ object ModStatusEffects {
     fun registerAndGetDefault(): RegistryEntry<StatusEffect> = SPEED
 
      */
+
+    fun registerModStatusEffects() {
+        ExtraPotions.logger.info("Registering Status Effects for " + ExtraPotions.MOD_ID)
+    }
 }

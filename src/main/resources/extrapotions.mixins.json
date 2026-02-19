@@ -1,8 +1,9 @@
 {
 	"required": true,
-	"package": "pink.iika.extrapotions.mixin",
+	"package": "pink.iika.extrapotions.mixin.impl",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"NourishmentBarMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

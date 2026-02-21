@@ -202,7 +202,7 @@ object ModPotions {
         "blindness",
         Potion(
             "blindness",
-            StatusEffectInstance(StatusEffects.BLINDNESS, 200)
+            StatusEffectInstance(StatusEffects.BLINDNESS, 100)
         )
     )
     @JvmField
@@ -210,7 +210,7 @@ object ModPotions {
         "long_blindness",
         Potion(
             "blindness",
-            StatusEffectInstance(StatusEffects.BLINDNESS, 300)
+            StatusEffectInstance(StatusEffects.BLINDNESS, 150)
         )
     )
 

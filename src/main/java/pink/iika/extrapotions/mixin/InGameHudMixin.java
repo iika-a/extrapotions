@@ -1,4 +1,4 @@
-package pink.iika.extrapotions.mixin.impl;
+package pink.iika.extrapotions.mixin;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;

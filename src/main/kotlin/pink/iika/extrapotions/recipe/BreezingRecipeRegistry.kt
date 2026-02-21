@@ -294,7 +294,7 @@ class BreezingRecipeRegistry internal constructor(
             builder.registerPotionRecipe(key(ModPotions.GALE), Blocks.SCULK.asItem(), Items.INK_SAC, key(ModPotions.DARKNESS))
             builder.registerPotionRecipe(key(ModPotions.DARKNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_DARKNESS))
 
-            builder.registerPotionRecipe(key(ModPotions.GALE), Blocks.SCULK.asItem(), Items.SPIDER_EYE, key(ModPotions.BLINDNESS))
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.INK_SAC, Items.SPIDER_EYE, key(ModPotions.BLINDNESS))
             builder.registerPotionRecipe(key(ModPotions.BLINDNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_BLINDNESS))
         }
     }

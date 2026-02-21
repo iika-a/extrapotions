@@ -15,13 +15,25 @@ import pink.iika.extrapotions.entity.effect.ModStatusEffects
 val FOOD_EMPTY_NOURISHMENT_TEXTURE: Identifier = Identifier.of(ExtraPotions.MOD_ID, "hud/food_empty")
 
 @ModifyVariable(
-    method = ["renderFood"],
+    method = ["renderFood(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;II)V"],
     at = At("STORE"),
     ordinal = 0
-) fun replaceEmptyTexture(original: Identifier,
+) internal fun replaceEmptyTexture(original: Identifier,
       context: DrawContext,
       player: PlayerEntity,
       top: Int,
       right: Int): Identifier {
+    return if (player.hasStatusEffect(ModStatusEffects.NOURISHMENT)) FOOD_EMPTY_NOURISHMENT_TEXTURE else original
+}
+
+@ModifyVariable(
+    method = ["renderFood"],
+    at = At("STORE"),
+    ordinal = 3
+) internal fun replaceEmptyHungerTexture(original: Identifier,
+                          context: DrawContext,
+                          player: PlayerEntity,
+                          top: Int,
+                          right: Int): Identifier {
     return if (player.hasStatusEffect(ModStatusEffects.NOURISHMENT)) FOOD_EMPTY_NOURISHMENT_TEXTURE else original
 }

@@ -3,7 +3,8 @@
 	"package": "pink.iika.extrapotions.mixin.impl",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"NourishmentBarMixin"
+		"InGameHudMixin",
+		"ExhaustionAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

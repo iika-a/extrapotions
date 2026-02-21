@@ -10,6 +10,7 @@
   "item.extrapotions.amethyst_potion.effect.levitation": "Potion of Levitation",
   "item.extrapotions.amethyst_potion.effect.luck": "Potion of Luck",
   "item.extrapotions.amethyst_potion.effect.unluck": "Potion of Bad Luck",
+  "item.extrapotions.amethyst_potion.effect.nourishment": "Potion of Nourishment",
 
   "item.extrapotions.amethyst_splash_potion.effect.water": "Amethyst Splash Water Bottle",
   "item.extrapotions.amethyst_splash_potion.effect.gale": "Gale Splash Potion",
@@ -18,6 +19,7 @@
   "item.extrapotions.amethyst_splash_potion.effect.levitation": "Splash Potion of Levitation",
   "item.extrapotions.amethyst_splash_potion.effect.luck": "Splash Potion of Luck",
   "item.extrapotions.amethyst_splash_potion.effect.unluck": "Splash Potion of Bad Luck",
+  "item.extrapotions.amethyst_splash_potion.effect.nourishment": "Splash Potion of Nourishment",
 
   "item.extrapotions.amethyst_lingering_potion.effect.water": "Amethyst Lingering Water Bottle",
   "item.extrapotions.amethyst_lingering_potion.effect.gale": "Gale Lingering Potion",
@@ -26,6 +28,9 @@
   "item.extrapotions.amethyst_lingering_potion.effect.levitation": "Lingering Potion of Levitation",
   "item.extrapotions.amethyst_lingering_potion.effect.luck": "Lingering Potion of Luck",
   "item.extrapotions.amethyst_lingering_potion.effect.unluck": "Lingering Potion of Bad Luck",
+  "item.extrapotions.amethyst_lingering_potion.effect.nourishment": "Lingering Potion of Nourishment",
+
+  "effect.extrapotions.nourishment": "Nourishment",
 
   "block.extrapotions.breezing_stand": "Breezing Stand",
 

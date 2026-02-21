@@ -14,6 +14,7 @@ import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.util.Identifier
 import pink.iika.extrapotions.ExtraPotions
 import pink.iika.extrapotions.block.ModBlocks.BREEZING_STAND
+import pink.iika.extrapotions.entity.effect.ModStatusEffects
 
 object ModPotions {
 
@@ -134,6 +135,82 @@ object ModPotions {
         Potion(
             "unluck",
             StatusEffectInstance(StatusEffects.UNLUCK, 4800, 1)
+        )
+    )
+
+    @JvmField
+    val NOURISHMENT = register(
+        "nourishment",
+        Potion(
+            "nourishment",
+            StatusEffectInstance(ModStatusEffects.NOURISHMENT, 3600)
+        )
+    )
+    @JvmField
+    val LONG_NOURISHMENT = register(
+        "long_nourishment",
+        Potion(
+            "nourishment",
+            StatusEffectInstance(ModStatusEffects.NOURISHMENT, 9600)
+        )
+    )
+    @JvmField
+    val STRONG_NOURISHMENT = register(
+        "strong_nourishment",
+        Potion(
+            "nourishment",
+            StatusEffectInstance(ModStatusEffects.NOURISHMENT, 1800, 1)
+        )
+    )
+
+    @JvmField
+    val SATURATION = register(
+        "saturation",
+        Potion(
+            "saturation",
+            StatusEffectInstance(StatusEffects.SATURATION, 1800)
+        )
+    )
+    @JvmField
+    val LONG_SATURATION = register(
+        "long_saturation",
+        Potion(
+            "saturation",
+            StatusEffectInstance(StatusEffects.SATURATION, 4800)
+        )
+    )
+
+    @JvmField
+    val DARKNESS = register(
+        "darkness",
+        Potion(
+            "darkness",
+            StatusEffectInstance(StatusEffects.DARKNESS, 200)
+        )
+    )
+    @JvmField
+    val LONG_DARKNESS = register(
+        "long_darkness",
+        Potion(
+            "darkness",
+            StatusEffectInstance(StatusEffects.DARKNESS, 300)
+        )
+    )
+
+    @JvmField
+    val BLINDNESS = register(
+        "blindness",
+        Potion(
+            "blindness",
+            StatusEffectInstance(StatusEffects.BLINDNESS, 200)
+        )
+    )
+    @JvmField
+    val LONG_BLINDNESS = register(
+        "long_blindness",
+        Potion(
+            "blindness",
+            StatusEffectInstance(StatusEffects.BLINDNESS, 300)
         )
     )
 

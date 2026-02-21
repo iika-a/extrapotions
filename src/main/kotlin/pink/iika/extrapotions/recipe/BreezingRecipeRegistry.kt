@@ -1,6 +1,7 @@
 package pink.iika.extrapotions.recipe
 
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder
+import net.minecraft.block.Blocks
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.PotionContentsComponent
 import net.minecraft.item.Item
@@ -283,6 +284,18 @@ class BreezingRecipeRegistry internal constructor(
             builder.registerPotionRecipe(key(Potions.LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.UNLUCK))
             builder.registerPotionRecipe(key(ModPotions.LONG_LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.LONG_UNLUCK))
             builder.registerPotionRecipe(key(ModPotions.STRONG_LUCK), Items.FERMENTED_SPIDER_EYE, Items.WIND_CHARGE, key(ModPotions.STRONG_UNLUCK))
+
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.COOKED_BEEF, Items.COOKED_PORKCHOP, key(ModPotions.NOURISHMENT))
+            builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_NOURISHMENT))
+            builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_NOURISHMENT))
+            builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.SATURATION))
+            builder.registerPotionRecipe(key(ModPotions.LONG_NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.LONG_NOURISHMENT))
+
+            builder.registerPotionRecipe(key(ModPotions.GALE), Blocks.SCULK.asItem(), Items.INK_SAC, key(ModPotions.DARKNESS))
+            builder.registerPotionRecipe(key(ModPotions.DARKNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_DARKNESS))
+
+            builder.registerPotionRecipe(key(ModPotions.GALE), Blocks.SCULK.asItem(), Items.SPIDER_EYE, key(ModPotions.BLINDNESS))
+            builder.registerPotionRecipe(key(ModPotions.BLINDNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_BLINDNESS))
         }
     }
 }

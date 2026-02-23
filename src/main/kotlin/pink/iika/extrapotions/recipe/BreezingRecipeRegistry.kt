@@ -288,14 +288,23 @@ class BreezingRecipeRegistry internal constructor(
             builder.registerPotionRecipe(key(ModPotions.GALE), Items.COOKED_BEEF, Items.COOKED_PORKCHOP, key(ModPotions.NOURISHMENT))
             builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_NOURISHMENT))
             builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_NOURISHMENT))
-            builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.SATURATION))
-            builder.registerPotionRecipe(key(ModPotions.LONG_NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.LONG_NOURISHMENT))
+            builder.registerPotionRecipe(key(ModPotions.NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.SATIATION))
+            builder.registerPotionRecipe(key(ModPotions.STRONG_NOURISHMENT), Items.GOLDEN_CARROT, Items.GLISTERING_MELON_SLICE, key(ModPotions.STRONG_SATIATION))
+            builder.registerPotionRecipe(key(ModPotions.SATIATION), Items.FERMENTED_SPIDER_EYE, Items.ROTTEN_FLESH, key(ModPotions.HUNGER))
+            builder.registerPotionRecipe(key(ModPotions.STRONG_SATIATION), Items.FERMENTED_SPIDER_EYE, Items.ROTTEN_FLESH, key(ModPotions.STRONG_HUNGER))
 
             builder.registerPotionRecipe(key(ModPotions.GALE), Blocks.SCULK.asItem(), Items.INK_SAC, key(ModPotions.DARKNESS))
             builder.registerPotionRecipe(key(ModPotions.DARKNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_DARKNESS))
 
             builder.registerPotionRecipe(key(ModPotions.GALE), Items.INK_SAC, Items.SPIDER_EYE, key(ModPotions.BLINDNESS))
             builder.registerPotionRecipe(key(ModPotions.BLINDNESS), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_BLINDNESS))
+
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.GOLDEN_CARROT, Items.SPIDER_EYE, key(ModPotions.HUNGER))
+            builder.registerPotionRecipe(key(ModPotions.HUNGER), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_HUNGER))
+
+            builder.registerPotionRecipe(key(ModPotions.GALE), Items.ENDER_PEARL, Items.CHORUS_FRUIT, key(ModPotions.ENDER))
+            builder.registerPotionRecipe(key(ModPotions.ENDER), Items.REDSTONE, Items.WIND_CHARGE, key(ModPotions.LONG_ENDER))
+            builder.registerPotionRecipe(key(ModPotions.ENDER), Items.GLOWSTONE_DUST, Items.WIND_CHARGE, key(ModPotions.STRONG_ENDER))
         }
     }
 }

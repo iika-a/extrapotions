@@ -164,23 +164,6 @@ object ModPotions {
     )
 
     @JvmField
-    val SATURATION = register(
-        "saturation",
-        Potion(
-            "saturation",
-            StatusEffectInstance(StatusEffects.SATURATION, 1800)
-        )
-    )
-    @JvmField
-    val LONG_SATURATION = register(
-        "long_saturation",
-        Potion(
-            "saturation",
-            StatusEffectInstance(StatusEffects.SATURATION, 4800)
-        )
-    )
-
-    @JvmField
     val DARKNESS = register(
         "darkness",
         Potion(
@@ -211,6 +194,67 @@ object ModPotions {
         Potion(
             "blindness",
             StatusEffectInstance(StatusEffects.BLINDNESS, 150)
+        )
+    )
+
+    @JvmField
+    val HUNGER = register(
+        "hunger",
+        Potion(
+            "instant_hunger",
+            StatusEffectInstance(ModStatusEffects.INSTANT_HUNGER, 1)
+        )
+    )
+
+    @JvmField
+    val STRONG_HUNGER = register(
+        "strong_hunger",
+        Potion(
+            "instant_hunger",
+            StatusEffectInstance(ModStatusEffects.INSTANT_HUNGER, 1, 1)
+        )
+    )
+
+    @JvmField
+    val SATIATION = register(
+        "satiation",
+        Potion(
+            "instant_satiation",
+            StatusEffectInstance(ModStatusEffects.INSTANT_SATIATION, 1)
+        )
+    )
+
+    @JvmField
+    val STRONG_SATIATION = register(
+        "strong_satiation",
+        Potion(
+            "instant_satiation",
+            StatusEffectInstance(ModStatusEffects.INSTANT_SATIATION, 1, 1)
+        )
+    )
+
+    @JvmField
+    val ENDER = register(
+        "ender",
+        Potion(
+            "ender",
+            StatusEffectInstance(ModStatusEffects.ENDER, 1200)
+        )
+    )
+    @JvmField
+    val LONG_ENDER = register(
+        "long_ender",
+        Potion(
+            "ender",
+            StatusEffectInstance(ModStatusEffects.ENDER, 2400)
+        )
+    )
+    @JvmField
+    val STRONG_ENDER = register(
+        "strong_ender",
+        Potion(
+            "ender",
+            StatusEffectInstance(ModStatusEffects.ENDER, 600, 1)
         )
     )
 

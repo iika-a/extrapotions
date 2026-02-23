@@ -1,23 +1,14 @@
 package pink.iika.extrapotions.entity.effect
 
-import net.minecraft.entity.attribute.EntityAttributes
-import net.minecraft.entity.attribute.EntityAttributeModifier.Operation
 import net.minecraft.entity.effect.StatusEffect
 import net.minecraft.entity.effect.StatusEffectCategory
-import net.minecraft.particle.ParticleTypes
 import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
-import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
-import net.minecraft.util.math.MathHelper
 import pink.iika.extrapotions.ExtraPotions
-import pink.iika.extrapotions.entity.effect.NourishmentStatusEffect
 
 object ModStatusEffects {
-
-    //private const val DARKNESS_PADDING_DURATION = 22
 
     private fun register(id: String, effect: StatusEffect): RegistryEntry<StatusEffect> {
         return Registry.registerReference(
@@ -34,6 +25,35 @@ object ModStatusEffects {
         NourishmentStatusEffect(
             StatusEffectCategory.BENEFICIAL,
             0xffd36b
+        )
+    )
+
+    @JvmField
+    val INSTANT_HUNGER = register(
+        "instant_hunger",
+        InstantHungerOrSatiationStatusEffect(
+            StatusEffectCategory.HARMFUL,
+            0x4a8501,
+            false
+        )
+    )
+
+    @JvmField
+    val INSTANT_SATIATION = register(
+        "instant_satiation",
+        InstantHungerOrSatiationStatusEffect(
+            StatusEffectCategory.BENEFICIAL,
+            0x4deb9f,
+            true
+        )
+    )
+
+    @JvmField
+    val ENDER = register(
+        "ender",
+        EnderStatusEffect(
+            StatusEffectCategory.HARMFUL,
+            0x349988
         )
     )
 

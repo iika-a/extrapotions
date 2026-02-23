@@ -11,6 +11,8 @@
   "item.extrapotions.amethyst_potion.effect.luck": "Potion of Luck",
   "item.extrapotions.amethyst_potion.effect.unluck": "Potion of Bad Luck",
   "item.extrapotions.amethyst_potion.effect.nourishment": "Potion of Nourishment",
+  "item.extrapotions.amethyst_potion.effect.instant_hunger": "Potion of Instant Hunger",
+  "item.extrapotions.amethyst_potion.effect.instant_satiation": "Potion of Instant Satiation",
 
   "item.extrapotions.amethyst_splash_potion.effect.water": "Amethyst Splash Water Bottle",
   "item.extrapotions.amethyst_splash_potion.effect.gale": "Gale Splash Potion",
@@ -20,6 +22,8 @@
   "item.extrapotions.amethyst_splash_potion.effect.luck": "Splash Potion of Luck",
   "item.extrapotions.amethyst_splash_potion.effect.unluck": "Splash Potion of Bad Luck",
   "item.extrapotions.amethyst_splash_potion.effect.nourishment": "Splash Potion of Nourishment",
+  "item.extrapotions.amethyst_splash_potion.effect.instant_hunger": "Splash Potion of Instant Hunger",
+  "item.extrapotions.amethyst_splash_potion.effect.instant_satiation": "Splash Potion of Instant Satiation",
 
   "item.extrapotions.amethyst_lingering_potion.effect.water": "Amethyst Lingering Water Bottle",
   "item.extrapotions.amethyst_lingering_potion.effect.gale": "Gale Lingering Potion",
@@ -29,8 +33,12 @@
   "item.extrapotions.amethyst_lingering_potion.effect.luck": "Lingering Potion of Luck",
   "item.extrapotions.amethyst_lingering_potion.effect.unluck": "Lingering Potion of Bad Luck",
   "item.extrapotions.amethyst_lingering_potion.effect.nourishment": "Lingering Potion of Nourishment",
+  "item.extrapotions.amethyst_lingering_potion.effect.instant_hunger": "Lingering Potion of Instant Hunger",
+  "item.extrapotions.amethyst_lingering_potion.effect.instant_satiation": "Lingering Potion of Instant Satiation",
 
   "effect.extrapotions.nourishment": "Nourishment",
+  "effect.extrapotions.instant_hunger": "Instant Hunger",
+  "effect.extrapotions.instant_satiation": "Instant Satiation",
 
   "block.extrapotions.breezing_stand": "Breezing Stand",
 
